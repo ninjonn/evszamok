@@ -53,7 +53,7 @@ function generateTable() {
     table.innerHTML = '';                      // Táblázat törlése  
     table.appendChild(tableHeader);            // Fejléc visszaillesztése  
     const tableBody = document.createElement('tbody'); // Új tbody létrehozása  
-    table.appendChild(tableBody);              // <tbody> hozzáadása a táblázathoz  
+    table.appendChild(tableBody);              // tbody hozzáadása a táblázathoz  
 
     for (const item of tableData) {            // For of ciklussal iterálunk az adatokon  
         const row = document.createElement('tr');    // Új sor az első eseményhez  
@@ -126,33 +126,70 @@ form.addEventListener('submit', function (e) {
     const evszam1Error = document.getElementById('error-evszam1');
     const megnev1Error = document.getElementById('error-megnev1');
     const tan1Error = document.getElementById('error-tan1');
+    const evszam2Error = document.getElementById('error-evszam2');
+    const megnev2Error = document.getElementById('error-megnev2');
+    const tan2Error = document.getElementById('error-tan2');
+
+    // Elrejti az összes hibajelzéshez tartozó elemet
+    korszak1Error.style.display = 'none';
+    evszam1Error.style.display = 'none';
+    megnev1Error.style.display = 'none';
+    tan1Error.style.display = 'none';
+    evszam2Error.style.display = 'none';
+    megnev2Error.style.display = 'none';
+    tan2Error.style.display = 'none';
 
     // Egyenként validáljuk a kötelező mezőket a segédfüggvény segítségével
     const validKorszak = validateField(korszakEl,korszak1Error);
     const validEvszam1 = validateField(evszam1El, evszam1Error);
     const validMegnev1 = validateField(megnev1El, megnev1Error);
     const validTan1 = validateField(tan1El, tan1Error);
+    
 
     // Ha bármelyik validáció sikertelen, kilépünk az eseménykezelőből
     if (!(validKorszak && validEvszam1 && validMegnev1 && validTan1)) {
         return;
     } 
 
+    // Megvizsgáljuk, hogy a második eseményhez tartozó mezők közül legalább egy ki van-e töltve
+    // Ha bármelyik mező tartalmaz értéket, igaz lesz
+    const optionalFilled = evszam2El.value || megnev2El.value || tan2El.value;
+
+    // Megvizsgáljuk, hogy a második eseményhez tartozó mezők közül valamelyik hiányzik-e
+    // Ha legalább egy mező üres, igaz lesz
+    const optionalIncomplete = !evszam2El.value || !megnev2El.value || !tan2El.value;
+
+    // Ha a második eseményhez tartozó mezők közül van kitöltött érték, de nem mindegyik, akkor hibát jelenítünk meg a hiányzó mezők esetén, és nem adjuk hozzá az eseményt a táblázathoz.
+    if (optionalFilled && optionalIncomplete) {
+        if (!evszam2El.value) {
+            evszam2Error.style.display = 'block'; // Megjeleníti a hibát, ha a második esemény évszám mezője üres
+        }
+        if (!megnev2El.value) {
+            megnev2Error.style.display = 'block'; // Megjeleníti a hibát, ha a második esemény neve mezője üres     
+        }
+        if (!tan2El.value) {
+            tan2Error.style.display = 'block'; // Megjeleníti a hibát, ha a második esemény tananyag mezője üres       
+        }
+        return; // Ne adjuk hozzá az eseményt a táblázathoz
+    }
+
+
     // Új objektum létrehozása az első esemény adataival  
-    const newEvent = {
+    const newElement = {
         korszak: korszakEl.value,     // Korszak név  
         evszam1: evszam1El.value,      // Első esemény évszáma  
         esemeny1: megnev1El.value,     // Első esemény neve  
         tananyag1: tan1El.value        // Első esemény tananyaga  
     };
+
     // Ha a második esemény valamelyik mezője nem üres, hozzáadjuk ugyanahhoz az objektumhoz  
-    if (evszam2El.value !== "" || megnev2El.value !== "" || tan2El.value !== "") {
-        newEvent.evszam2 = evszam2El.value;
-        newEvent.esemeny2 = megnev2El.value;
-        newEvent.tananyag2 = tan2El.value;
+    if (!secondFieldsIncomplete) {
+        newElement.evszam2 = evszam2El.value;
+        newElement.esemeny2 = megnev2El.value;
+        newElement.tananyag2 = tan2El.value;
     }
 
-    tableData.push(newEvent); // Hozzáadjuk az új objektumot az adatok tömbjéhez  
+    tableData.push(newElement); // Hozzáadjuk az új objektumot az adatok tömbjéhez  
     generateTable(); // Frissítjük a táblázatot  
 
     // Ürítjük az űrlap mezőket  
