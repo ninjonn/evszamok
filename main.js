@@ -129,7 +129,6 @@ form.addEventListener('submit', function (e) {
     const evszam2Error = document.getElementById('error-evszam2');
     const megnev2Error = document.getElementById('error-megnev2');
     const tan2Error = document.getElementById('error-tan2');
-
     // Elrejti az összes hibajelzéshez tartozó elemet
     korszak1Error.style.display = 'none';
     evszam1Error.style.display = 'none';
@@ -154,11 +153,9 @@ form.addEventListener('submit', function (e) {
     // Megvizsgáljuk, hogy a második eseményhez tartozó mezők közül legalább egy ki van-e töltve
     // Ha bármelyik mező tartalmaz értéket, igaz lesz
     const optionalFilled = evszam2El.value || megnev2El.value || tan2El.value;
-
     // Megvizsgáljuk, hogy a második eseményhez tartozó mezők közül valamelyik hiányzik-e
     // Ha legalább egy mező üres, igaz lesz
     const optionalIncomplete = !evszam2El.value || !megnev2El.value || !tan2El.value;
-
     // Ha a második eseményhez tartozó mezők közül van kitöltött érték, de nem mindegyik, akkor hibát jelenítünk meg a hiányzó mezők esetén, és nem adjuk hozzá az eseményt a táblázathoz.
     if (optionalFilled && optionalIncomplete) {
         if (!evszam2El.value) {
@@ -172,8 +169,6 @@ form.addEventListener('submit', function (e) {
         }
         return; // Ne adjuk hozzá az eseményt a táblázathoz
     }
-
-
     // Új objektum létrehozása az első esemény adataival  
     const newElement = {
         korszak: korszakEl.value,     // Korszak név  
@@ -183,7 +178,7 @@ form.addEventListener('submit', function (e) {
     };
 
     // Ha a második esemény valamelyik mezője nem üres, hozzáadjuk ugyanahhoz az objektumhoz  
-    if (!secondFieldsIncomplete) {
+    if (!optionalIncomplete) {
         newElement.evszam2 = evszam2El.value;
         newElement.esemeny2 = megnev2El.value;
         newElement.tananyag2 = tan2El.value;
