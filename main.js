@@ -1,4 +1,4 @@
-const tableData = [  // Eredeti adatok, egy objektum egy korszak adataival (egy vagy két esemény)
+const tableData = [  // Eredeti adatok, egy objektum egy korszak adataival
     {
         korszak: 'XVI. század',               // Korszak neve
         evszam1: '1514',                      // Első esemény évszáma
@@ -44,7 +44,7 @@ tableHeader.appendChild(headerRow);                    // Fejléc sor hozzáadá
 
 const headers = ['Korszak', 'Évszám', 'Esemény', 'Tananyag']; // Fejléc cellák nevei  
 for (const header of headers) {
-    const th = document.createElement('th'); // <th> elem létrehozása  
+    const th = document.createElement('th'); // th elem létrehozása  
     th.innerHTML = header;                     // Beállítjuk a cella tartalmát  
     headerRow.appendChild(th);                 // Hozzáadjuk a fejléc sorhoz  
 }
@@ -52,12 +52,12 @@ for (const header of headers) {
 function generateTable() {
     table.innerHTML = '';                      // Táblázat törlése  
     table.appendChild(tableHeader);            // Fejléc visszaillesztése  
-    const tableBody = document.createElement('tbody'); // Új <tbody> létrehozása  
+    const tableBody = document.createElement('tbody'); // Új tbody létrehozása  
     table.appendChild(tableBody);              // <tbody> hozzáadása a táblázathoz  
 
-    for (const item of tableData) {            // For...of ciklussal iterálunk az adatokon  
+    for (const item of tableData) {            // For of ciklussal iterálunk az adatokon  
         const row = document.createElement('tr');    // Új sor az első eseményhez  
-        tableBody.appendChild(row);                  // Sor hozzáadása a <tbody>-hoz  
+        tableBody.appendChild(row);                  // Sor hozzáadása a tbody-hoz  
 
         const korszakCell = document.createElement('td'); // Korszak cella létrehozása  
         korszakCell.innerHTML = item.korszak;             // Cellába írjuk a korszak nevét  
@@ -78,7 +78,7 @@ function generateTable() {
 
         if (item.evszam2) {                               // Ha létezik második esemény  
             const row2 = document.createElement('tr');  // Új sor létrehozása a második eseményhez  
-            tableBody.appendChild(row2);                  // Hozzáadjuk az új sort a <tbody>-hoz  
+            tableBody.appendChild(row2);                  // Hozzáadjuk az új sort a tbody-hoz  
 
             const evszam2Cell = document.createElement('td'); // Második esemény évszám cella  
             evszam2Cell.innerHTML = item.evszam2;            // Cella tartalma  
@@ -97,6 +97,15 @@ function generateTable() {
 
 generateTable(); // Megjelenítjük a táblázatot
 
+function validateField(inputElement,errorElement) { // Validációs segédfüggvény: paraméterként kapja az input elemet és a hozzá tartozó hibaüzenet elemet.
+    errorElement.style.display = 'none'; // Először alaphelyzetbe állítjuk a hibaüzenetet
+    if(inputElement.value === "") { // Ha az input mező üres, akkor megjelenítjük a hibaüzenetet és false értékkel térünk vissza
+        errorElement.style.display = 'block';
+        return false;
+    }
+    return true;
+}
+
 const form = document.getElementById('form'); // Lekérjük az űrlapot  
 form.addEventListener('submit', function (e) {
     e.preventDefault(); // Megakadályozzuk az űrlap alapértelmezett viselkedését
@@ -112,40 +121,22 @@ form.addEventListener('submit', function (e) {
     const megnev2El = document.getElementById('megnev2');
     const tan2El = document.getElementById('tan2');
 
+    // Hibaüzenetek elemeinek lekérése az űrlapból  
     const korszak1Error = document.getElementById('error-korszak');
     const evszam1Error = document.getElementById('error-evszam1');
     const megnev1Error = document.getElementById('error-megnev1');
     const tan1Error = document.getElementById('error-tan1');
-    const evszam2Error = document.getElementById('error-evszam2');
-    const megnev2Error = document.getElementById('error-megnev2');
-    const tan2Error = document.getElementById('error-tan2');
 
-    korszak1Error.style.display = 'none';
-    evszam1Error.style.display = 'none';
-    megnev1Error.style.display = 'none';
-    tan1Error.style.display = 'none';
+    // Egyenként validáljuk a kötelező mezőket a segédfüggvény segítségével
+    const validKorszak = validateField(korszakEl,korszak1Error);
+    const validEvszam1 = validateField(evszam1El, evszam1Error);
+    const validMegnev1 = validateField(megnev1El, megnev1Error);
+    const validTan1 = validateField(tan1El, tan1Error);
 
-    let valid = true; // Feltételezzük, hogy az űrlap érvényes
-    if (korszakEl.value === "") {
-        korszak1Error.style.display = 'block';
-        valid = false;
-    } // Ha a korszak üres, érvénytelen
-    if (evszam1El.value === "") {
-        evszam1Error.style.display = 'block';
-        valid = false;
-    }  // Ha az első évszám üres, érvénytelen
-    if (megnev1El.value === "") {
-        megnev1Error.style.display = 'block';
-        valid = false;
-    }  // Ha az első esemény neve üres, érvénytelen
-    if (tan1El.value === "") {
-        tan1Error.style.display = 'block';
-        valid = false;
-    }      // Ha az első tananyag nincs kiválasztva, érvénytelen
-
-    if (!valid) {
+    // Ha bármelyik validáció sikertelen, kilépünk az eseménykezelőből
+    if (!(validKorszak && validEvszam1 && validMegnev1 && validTan1)) {
         return;
-    } // Ha érvénytelen az űrlap, kilépünk
+    } 
 
     // Új objektum létrehozása az első esemény adataival  
     const newEvent = {
