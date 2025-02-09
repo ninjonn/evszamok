@@ -34,24 +34,26 @@ const tableData = [  // Eredeti adatok, egy objektum egy korszak adataival
     }
 ];
 
+function generateTableHeader(table) {
+    const tableHeader = document.createElement('thead'); // Létrehozunk egy thead elemet, ami a táblázat fejlécét fogja tartalmazni
+    const headerRow = document.createElement('tr'); // Létrehozunk egy tr elemet, amely egy sort jelent a fejlécben
+    tableHeader.appendChild(headerRow); // Hozzáadjuk a sor elemet a thead elemhez
+    const headers = ['Korszak', 'Évszám', 'Esemény', 'Tananyag']; // Létrehozunk egy tömböt a fejléc cellák címkéivel
+    for (const header of headers) { // Végigiterálunk a headers tömb minden elemén
+        const th = document.createElement('th'); // Létrehozunk egy th elemet, amely egy fejléc cellát jelent
+        th.innerHTML = header; // Beállítjuk a th elem belső tartalmát a header változó értékére
+        headerRow.appendChild(th);  // Hozzáadjuk a th elemet a fejléc sorhoz
+    }
+    table.appendChild(tableHeader); // Végül hozzáadjuk a teljes thead elemet a megadott táblázathoz
+}
+
 const table = document.createElement('table'); // Létrehozunk egy táblázatot  
 document.body.appendChild(table);            // Hozzáadjuk az oldalhoz  
 
-const tableHeader = document.createElement('thead'); // Fejléc létrehozása  
-const headerRow = document.createElement('tr');        // Fejléc sor létrehozása  
-table.appendChild(tableHeader);                        // Fejléc hozzáadása a táblázathoz  
-tableHeader.appendChild(headerRow);                    // Fejléc sor hozzáadása a fejléchez  
-
-const headers = ['Korszak', 'Évszám', 'Esemény', 'Tananyag']; // Fejléc cellák nevei  
-for (const header of headers) {
-    const th = document.createElement('th'); // th elem létrehozása  
-    th.innerHTML = header;                     // Beállítjuk a cella tartalmát  
-    headerRow.appendChild(th);                 // Hozzáadjuk a fejléc sorhoz  
-}
-
 function generateTable() {
     table.innerHTML = '';                      // Táblázat törlése  
-    table.appendChild(tableHeader);            // Fejléc visszaillesztése  
+    generateTableHeader(table); // Fejléc generálása a függvény segítségével 
+
     const tableBody = document.createElement('tbody'); // Új tbody létrehozása  
     table.appendChild(tableBody);              // tbody hozzáadása a táblázathoz  
 
