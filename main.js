@@ -1,12 +1,12 @@
-const tableData = [  // Eredeti adatok, egy objektum egy korszak adataival
+const tableData = [ // Eredeti adatok, egy objektum egy korszak adataival
     {
-        korszak: 'XVI. század',               // Korszak neve
-        evszam1: '1514',                      // Első esemény évszáma
+        korszak: 'XVI. század', // Korszak neve
+        evszam1: '1514', // Első esemény évszáma
         esemeny1: 'Dózsa-féle parasztháború',  // Első esemény neve
-        tananyag1: 'magyar',                  // Első esemény tananyaga
-        evszam2: '1519-1522',                 // Második esemény évszáma
+        tananyag1: 'magyar', // Első esemény tananyaga
+        evszam2: '1519-1522', // Második esemény évszáma
         esemeny2: 'Magellán körülhajózza a földet', // Második esemény neve
-        tananyag2: 'egyetemes'                // Második esemény tananyaga
+        tananyag2: 'egyetemes' // Második esemény tananyaga
     },
     {
         korszak: 'XVII. század',
@@ -48,60 +48,60 @@ function generateTableHeader(table) {
 }
 
 const table = document.createElement('table'); // Létrehozunk egy táblázatot  
-document.body.appendChild(table);            // Hozzáadjuk az oldalhoz  
+document.body.appendChild(table); // Hozzáadjuk az oldalhoz  
 
-function generateTable() {
-    table.innerHTML = '';                      // Táblázat törlése  
+function generateTable(data) { // Függvény deklaráció, mely egy data nevű paramétert vár, ez tartalmazza a táblázat sorainak adatait
+    table.innerHTML = ''; // Táblázat törlése  
     generateTableHeader(table); // Fejléc generálása a függvény segítségével 
 
     const tableBody = document.createElement('tbody'); // Új tbody létrehozása  
-    table.appendChild(tableBody);              // tbody hozzáadása a táblázathoz  
+    table.appendChild(tableBody); // tbody hozzáadása a táblázathoz  
 
-    for (const item of tableData) {            // For of ciklussal iterálunk az adatokon  
-        const row = document.createElement('tr');    // Új sor az első eseményhez  
-        tableBody.appendChild(row);                  // Sor hozzáadása a tbody-hoz  
+    for (const item of data) { // For of ciklussal iterálunk az adatokon  
+        const row = document.createElement('tr'); // Új sor az első eseményhez  
+        tableBody.appendChild(row); // Sor hozzáadása a tbody-hoz  
 
         const korszakCell = document.createElement('td'); // Korszak cella létrehozása  
-        korszakCell.innerHTML = item.korszak;             // Cellába írjuk a korszak nevét  
-        korszakCell.rowSpan = item.evszam2 ? 2 : 1;         // Ha van második esemény, rowspan 2, egyébként 1  
-        row.appendChild(korszakCell);                     // Korszak cella hozzáadása az első sorhoz  
+        korszakCell.innerHTML = item.korszak; // Cellába írjuk a korszak nevét  
+        korszakCell.rowSpan = item.evszam2 ? 2 : 1; // Ha van második esemény, rowspan 2, egyébként 1  
+        row.appendChild(korszakCell); // Korszak cella hozzáadása az első sorhoz  
 
         const evszam1Cell = document.createElement('td'); // Első esemény évszám cella  
-        evszam1Cell.innerHTML = item.evszam1;             // Cella tartalma  
-        row.appendChild(evszam1Cell);                     // Hozzáadjuk a sorhoz  
+        evszam1Cell.innerHTML = item.evszam1; // Cella tartalma  
+        row.appendChild(evszam1Cell); // Hozzáadjuk a sorhoz  
 
         const esemeny1Cell = document.createElement('td'); // Első esemény neve cella  
-        esemeny1Cell.innerHTML = item.esemeny1;           // Cella tartalma  
-        row.appendChild(esemeny1Cell);                    // Hozzáadjuk a sorhoz  
+        esemeny1Cell.innerHTML = item.esemeny1; // Cella tartalma  
+        row.appendChild(esemeny1Cell); // Hozzáadjuk a sorhoz  
 
         const tananyag1Cell = document.createElement('td'); // Első esemény tananyag cella  
-        tananyag1Cell.innerHTML = item.tananyag1;         // Cella tartalma  
-        row.appendChild(tananyag1Cell);                   // Hozzáadjuk a sorhoz  
+        tananyag1Cell.innerHTML = item.tananyag1; // Cella tartalma  
+        row.appendChild(tananyag1Cell); // Hozzáadjuk a sorhoz  
 
-        if (item.evszam2) {                               // Ha létezik második esemény  
+        if (item.evszam2) { // Ha létezik második esemény  
             const row2 = document.createElement('tr');  // Új sor létrehozása a második eseményhez  
-            tableBody.appendChild(row2);                  // Hozzáadjuk az új sort a tbody-hoz  
+            tableBody.appendChild(row2); // Hozzáadjuk az új sort a tbody-hoz  
 
             const evszam2Cell = document.createElement('td'); // Második esemény évszám cella  
-            evszam2Cell.innerHTML = item.evszam2;            // Cella tartalma  
-            row2.appendChild(evszam2Cell);                   // Hozzáadjuk a sorhoz  
+            evszam2Cell.innerHTML = item.evszam2; // Cella tartalma  
+            row2.appendChild(evszam2Cell); // Hozzáadjuk a sorhoz  
 
             const esemeny2Cell = document.createElement('td'); // Második esemény neve cella  
-            esemeny2Cell.innerHTML = item.esemeny2;          // Cella tartalma  
-            row2.appendChild(esemeny2Cell);                  // Hozzáadjuk a sorhoz  
+            esemeny2Cell.innerHTML = item.esemeny2; // Cella tartalma  
+            row2.appendChild(esemeny2Cell); // Hozzáadjuk a sorhoz  
 
             const tananyag2Cell = document.createElement('td'); // Második esemény tananyag cella  
-            tananyag2Cell.innerHTML = item.tananyag2;        // Cella tartalma  
-            row2.appendChild(tananyag2Cell);                 // Hozzáadjuk a sorhoz  
+            tananyag2Cell.innerHTML = item.tananyag2; // Cella tartalma  
+            row2.appendChild(tananyag2Cell); // Hozzáadjuk a sorhoz  
         }
     }
 }
 
-generateTable(); // Megjelenítjük a táblázatot
+generateTable(tableData); // Megjelenítjük a táblázatot
 
-function validateField(inputElement,errorElement) { // Validációs segédfüggvény: paraméterként kapja az input elemet és a hozzá tartozó hibaüzenet elemet
+function validateField(inputElement, errorElement) { // Validációs segédfüggvény: paraméterként kapja az input elemet és a hozzá tartozó hibaüzenet elemet
     errorElement.style.display = 'none'; // Először alaphelyzetbe állítjuk a hibaüzenetet
-    if(inputElement.value === "") { // Ha az input mező üres, akkor megjelenítjük a hibaüzenetet és false értékkel térünk vissza
+    if (inputElement.value === "") { // Ha az input mező üres, akkor megjelenítjük a hibaüzenetet és false értékkel térünk vissza
         errorElement.style.display = 'block';
         return false;
     }
@@ -113,17 +113,17 @@ function complexValidation(evszam2Element, megnev2Element, tan2Element) {
     const evszam2Error = document.getElementById('error-evszam2');
     const megnev2Error = document.getElementById('error-megnev2');
     const tan2Error = document.getElementById('error-tan2');
-    
+
     // Hibajelzések lenullázása a második esemény mezőihez
     evszam2Error.style.display = 'none';
     megnev2Error.style.display = 'none';
     tan2Error.style.display = 'none';
-    
+
     // Ellenőrizzük, hogy legalább egy mező ki van-e töltve
     const optionalFilled = evszam2Element.value || megnev2Element.value || tan2Element.value;
     // Ellenőrizzük, hogy valamelyik mező hiányzik-e
     const optionalIncomplete = !evszam2Element.value || !megnev2Element.value || !tan2Element.value;
-    
+
     // Ha van kitöltött mező, de nem mindegyik, megjelenítjük a hibákat
     if (optionalFilled && optionalIncomplete) {
         if (!evszam2Element.value) {
@@ -168,27 +168,27 @@ form.addEventListener('submit', function (e) {
     tan1Error.style.display = 'none';
 
     // Egyenként validáljuk a kötelező mezőket a segédfüggvény segítségével
-    const validKorszak = validateField(korszakEl,korszak1Error);
+    const validKorszak = validateField(korszakEl, korszak1Error);
     const validEvszam1 = validateField(evszam1El, evszam1Error);
     const validMegnev1 = validateField(megnev1El, megnev1Error);
     const validTan1 = validateField(tan1El, tan1Error);
-    
+
 
     // Ha bármelyik validáció sikertelen, kilépünk az eseménykezelőből
     if (!(validKorszak && validEvszam1 && validMegnev1 && validTan1)) {
         return;
-    } 
+    }
 
     if (!complexValidation(evszam2El, megnev2El, tan2El)) {
         return;
     }
-    
+
     // Új objektum létrehozása az első esemény adataival  
     const newElement = {
-        korszak: korszakEl.value,     // Korszak név  
-        evszam1: evszam1El.value,      // Első esemény évszáma  
-        esemeny1: megnev1El.value,     // Első esemény neve  
-        tananyag1: tan1El.value        // Első esemény tananyaga  
+        korszak: korszakEl.value, // Korszak név  
+        evszam1: evszam1El.value, // Első esemény évszáma  
+        esemeny1: megnev1El.value, // Első esemény neve  
+        tananyag1: tan1El.value // Első esemény tananyaga  
     };
 
     // Ha a második esemény összes mezője ki van töltve, hozzáadjuk az objektumhoz
@@ -199,7 +199,7 @@ form.addEventListener('submit', function (e) {
     }
 
     tableData.push(newElement); // Hozzáadjuk az új objektumot az adatok tömbjéhez  
-    generateTable(); // Frissítjük a táblázatot  
+    generateTable(tableData); // Frissítjük a táblázatot  
 
     // Ürítjük az űrlap mezőket  
     korszakEl.value = '';
