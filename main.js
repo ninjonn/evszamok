@@ -255,9 +255,10 @@ function complexValidation(evszam2Element, megnev2Element, tan2Element) {
     const tan2Error = document.getElementById('error-tan2');
 
     // Hibajelzések lenullázása a második esemény mezőihez
-    evszam2Error.style.display = 'none';
-    megnev2Error.style.display = 'none';
-    tan2Error.style.display = 'none';
+    var errors = [evszam2Error, megnev2Error, tan2Error];
+    for (let i = 0; i < errors.length; i++) {
+    errors[i].style.display = 'none';
+  }
 
     // Ellenőrizzük, hogy legalább egy mező ki van-e töltve
     const optionalFilled = evszam2Element.value || megnev2Element.value || tan2Element.value;
@@ -300,11 +301,10 @@ formElement.addEventListener('submit', function (e) {
     const tan1Error = document.getElementById('error-tan1');
 
     // Elrejti az összes hibajelzéshez tartozó elemet
-    korszak1Error.style.display = 'none';
-    evszam1Error.style.display = 'none';
-    megnev1Error.style.display = 'none';
-    tan1Error.style.display = 'none';
-
+    var errors = [korszak1Error, evszam1Error, megnev1Error, tan1Error];
+    for (let i = 0; i < errors.length; i++) {
+    errors[i].style.display = 'none';
+  }
     // Egyenként validáljuk a kötelező mezőket a segédfüggvény segítségével
     const validKorszak = validateField(korszakEl, korszak1Error);
     const validEvszam1 = validateField(evszam1El, evszam1Error);
@@ -341,11 +341,8 @@ formElement.addEventListener('submit', function (e) {
     generateTable(tableData); // Frissítjük a táblázatot  
 
     // Ürítjük az űrlap mezőket  
-    korszakEl.value = '';
-    evszam1El.value = '';
-    megnev1El.value = '';
-    tan1El.value = '';
-    evszam2El.value = '';
-    megnev2El.value = '';
-    tan2El.value = '';
+    var inputs = [korszakEl, evszam1El, megnev1El, tan1El, evszam2El, megnev2El, tan2El];
+    for(let i = 0;i<inputs.length;i++){
+        inputs[i].value = '';
+    }
 });
