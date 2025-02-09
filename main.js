@@ -1,3 +1,7 @@
+/**
+ * Létrehoz egy dinamikus űrlapot
+ * @returns {HTMLFormElement} A létrehozott űrlap elem
+ */
 function generateForm() { // Függvény, amely létrehoz egy dinamikus űrlapot
     const form = document.createElement('form'); // Form elemet létrehozása
     form.id = 'form'; // Beállítja az űrlap id-ját form-ra
@@ -116,6 +120,10 @@ const formElement = generateForm(); // Meghívjuk a generateForm függvényt és
 const table = document.createElement('table'); // Létrehozunk egy táblázatot  
 document.body.appendChild(table); // Hozzáadjuk az oldalhoz
 
+/**
+ *  Létrehoz egy táblázat fejlécet a megadott táblázathoz
+ * @param {HTMLTableElement} table A táblázat, amelyhez a fejlécet hozzáadja
+ */
 function generateTableHeader(table) {
     const tableHeader = document.createElement('thead'); // Létrehozunk egy thead elemet, ami a táblázat fejlécét fogja tartalmazni
     const headerRow = document.createElement('tr'); // Létrehozunk egy tr elemet, amely egy sort jelent a fejlécben
@@ -129,7 +137,10 @@ function generateTableHeader(table) {
     table.appendChild(tableHeader); // Végül hozzáadjuk a teljes thead elemet a megadott táblázathoz
 }
 
-
+/**
+ * Generálja a táblázatot a megadott adatok alapján
+ * @param {Array<Object>} data A táblázat sorainak adatait tartalmazó tömb
+ */
 function generateTable(data) { // Függvény deklaráció, mely egy data nevű paramétert vár, ez tartalmazza a táblázat sorainak adatait
     table.innerHTML = ''; // Táblázat törlése  
     generateTableHeader(table); // Fejléc generálása a függvény segítségével 
@@ -215,6 +226,12 @@ const tableData = [ // Eredeti adatok, egy objektum egy korszak adataival
 
 generateTable(tableData); // Megjelenítjük a táblázatot
 
+/**
+ * Validálja az adott űrlap mezőt
+ * @param {HTMLInputElement} inputElement Az űrlap mező eleme
+ * @param {HTMLElement} errorElement A mezőhöz tartozó hibaüzenetet tartalmazó elem
+ * @returns {boolean} True, ha a mező nem üres, különben false
+ */
 function validateField(inputElement, errorElement) { // Validációs segédfüggvény: paraméterként kapja az input elemet és a hozzá tartozó hibaüzenet elemet
     errorElement.style.display = 'none'; // Először alaphelyzetbe állítjuk a hibaüzenetet
     if (inputElement.value === "") { // Ha az input mező üres, akkor megjelenítjük a hibaüzenetet és false értékkel térünk vissza
@@ -224,6 +241,13 @@ function validateField(inputElement, errorElement) { // Validációs segédfügg
     return true;
 }
 
+/**
+ * Komplex validációt végez a második esemény mezőin
+ * @param {HTMLInputElement} evszam2Element A második esemény évszám mezője
+ * @param {HTMLInputElement} megnev2Element A második esemény megnevezés mezője
+ * @param {HTMLSelectElement} tan2Element A második esemény tananyag mezője
+ * @returns {boolean} True, ha a szükséges mezők kitöltöttek, különben false
+ */
 function complexValidation(evszam2Element, megnev2Element, tan2Element) {
     // Hibaüzenetek elemeinek lekérése az űrlapból
     const evszam2Error = document.getElementById('error-evszam2');
