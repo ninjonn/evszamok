@@ -97,10 +97,42 @@ function generateTable() {
 
 generateTable(); // Megjelenítjük a táblázatot
 
-function validateField(inputElement,errorElement) { // Validációs segédfüggvény: paraméterként kapja az input elemet és a hozzá tartozó hibaüzenet elemet.
+function validateField(inputElement,errorElement) { // Validációs segédfüggvény: paraméterként kapja az input elemet és a hozzá tartozó hibaüzenet elemet
     errorElement.style.display = 'none'; // Először alaphelyzetbe állítjuk a hibaüzenetet
     if(inputElement.value === "") { // Ha az input mező üres, akkor megjelenítjük a hibaüzenetet és false értékkel térünk vissza
         errorElement.style.display = 'block';
+        return false;
+    }
+    return true;
+}
+
+function complexValidation(evszam2Element, megnev2Element, tan2Element) {
+    // Hibaüzenetek elemeinek lekérése az űrlapból
+    const evszam2Error = document.getElementById('error-evszam2');
+    const megnev2Error = document.getElementById('error-megnev2');
+    const tan2Error = document.getElementById('error-tan2');
+    
+    // Hibajelzések lenullázása a második esemény mezőihez
+    evszam2Error.style.display = 'none';
+    megnev2Error.style.display = 'none';
+    tan2Error.style.display = 'none';
+    
+    // Ellenőrizzük, hogy legalább egy mező ki van-e töltve
+    const optionalFilled = evszam2Element.value || megnev2Element.value || tan2Element.value;
+    // Ellenőrizzük, hogy valamelyik mező hiányzik-e
+    const optionalIncomplete = !evszam2Element.value || !megnev2Element.value || !tan2Element.value;
+    
+    // Ha van kitöltött mező, de nem mindegyik, megjelenítjük a hibákat
+    if (optionalFilled && optionalIncomplete) {
+        if (!evszam2Element.value) {
+            evszam2Error.style.display = 'block';
+        }
+        if (!megnev2Element.value) {
+            megnev2Error.style.display = 'block';
+        }
+        if (!tan2Element.value) {
+            tan2Error.style.display = 'block';
+        }
         return false;
     }
     return true;
@@ -126,17 +158,12 @@ form.addEventListener('submit', function (e) {
     const evszam1Error = document.getElementById('error-evszam1');
     const megnev1Error = document.getElementById('error-megnev1');
     const tan1Error = document.getElementById('error-tan1');
-    const evszam2Error = document.getElementById('error-evszam2');
-    const megnev2Error = document.getElementById('error-megnev2');
-    const tan2Error = document.getElementById('error-tan2');
+
     // Elrejti az összes hibajelzéshez tartozó elemet
     korszak1Error.style.display = 'none';
     evszam1Error.style.display = 'none';
     megnev1Error.style.display = 'none';
     tan1Error.style.display = 'none';
-    evszam2Error.style.display = 'none';
-    megnev2Error.style.display = 'none';
-    tan2Error.style.display = 'none';
 
     // Egyenként validáljuk a kötelező mezőket a segédfüggvény segítségével
     const validKorszak = validateField(korszakEl,korszak1Error);
@@ -150,25 +177,10 @@ form.addEventListener('submit', function (e) {
         return;
     } 
 
-    // Megvizsgáljuk, hogy a második eseményhez tartozó mezők közül legalább egy ki van-e töltve
-    // Ha bármelyik mező tartalmaz értéket, igaz lesz
-    const optionalFilled = evszam2El.value || megnev2El.value || tan2El.value;
-    // Megvizsgáljuk, hogy a második eseményhez tartozó mezők közül valamelyik hiányzik-e
-    // Ha legalább egy mező üres, igaz lesz
-    const optionalIncomplete = !evszam2El.value || !megnev2El.value || !tan2El.value;
-    // Ha a második eseményhez tartozó mezők közül van kitöltött érték, de nem mindegyik, akkor hibát jelenítünk meg a hiányzó mezők esetén, és nem adjuk hozzá az eseményt a táblázathoz.
-    if (optionalFilled && optionalIncomplete) {
-        if (!evszam2El.value) {
-            evszam2Error.style.display = 'block'; // Megjeleníti a hibát, ha a második esemény évszám mezője üres
-        }
-        if (!megnev2El.value) {
-            megnev2Error.style.display = 'block'; // Megjeleníti a hibát, ha a második esemény neve mezője üres     
-        }
-        if (!tan2El.value) {
-            tan2Error.style.display = 'block'; // Megjeleníti a hibát, ha a második esemény tananyag mezője üres       
-        }
-        return; // Ne adjuk hozzá az eseményt a táblázathoz
+    if (!complexValidation(evszam2El, megnev2El, tan2El)) {
+        return;
     }
+    
     // Új objektum létrehozása az első esemény adataival  
     const newElement = {
         korszak: korszakEl.value,     // Korszak név  
@@ -177,8 +189,8 @@ form.addEventListener('submit', function (e) {
         tananyag1: tan1El.value        // Első esemény tananyaga  
     };
 
-    // Ha a második esemény valamelyik mezője nem üres, hozzáadjuk ugyanahhoz az objektumhoz  
-    if (!optionalIncomplete) {
+    // Ha a második esemény összes mezője ki van töltve, hozzáadjuk az objektumhoz
+    if (evszam2El.value && megnev2El.value && tan2El.value) {
         newElement.evszam2 = evszam2El.value;
         newElement.esemeny2 = megnev2El.value;
         newElement.tananyag2 = tan2El.value;
